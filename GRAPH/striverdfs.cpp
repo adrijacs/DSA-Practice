@@ -1,30 +1,16 @@
 #include<iostream>
 #include<vector>
-#include <queue>
-
 using namespace std;
 
-void bfs(int n, vector<int>adj[]){
-    int vis[n+1]={0};
-    vis[6]=1;
-    queue <int> q;
-    q.push(6);
-    vector<int> bfs;
-    while(!q.empty()){
-      int node=q.front();
-      q.pop();                                 // 9 9 1 2 1 6 2 3 2 4 4 5 5 8 6 7 6 9 7 8
-      bfs.push_back(node);
-      for(auto item:adj[node]){
-        if(!vis[item]){
-          vis[item]=1;
-          q.push(item);
-        }
-      }
-    }
-    cout<<"The BFS traversal looks like: ";
-    for(auto item:bfs){
-      cout<<item<<" ";
-    }
+void dfs(int node,vector<int>adj[],int vis[],vector<int>&list){
+ vis[node]=1;
+ list.push_back(node);
+ for(auto it:adj[node]){
+  if(!vis[it]){
+    vis[it]=1;
+    dfs(it,adj,vis,list);
+  }
+ }
 }
 
 int main(){
@@ -34,6 +20,9 @@ int main(){
   cout<<"Enter the number of edges";
   cin>>m;
   vector<int>adj[n+1];
+  int vis[n+1]={0};
+  int start=1;
+  vector<int>list;
   //storing the graph
   for(int i=0;i<m;i++){
     int u,v;              // 1 2, 1 3, 3 4, 2 4, 2 5, 4 5
@@ -52,5 +41,9 @@ int main(){
     }
     cout<<endl;
   }
-  // bfs(n,adj);
+  dfs(start,adj,vis,list);
+  cout<<"The dfs traversal of the graph looks like.."<<endl;
+  for(auto it:list){
+    cout<<it<<" ";    //8 8 1 2 1 3 2 5 2 6 3 4 3 7 4 8 7 8 
+  }
 }
